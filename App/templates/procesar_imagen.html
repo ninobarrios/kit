@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load bootstrap4 %}
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/estilosuno.css' %}" />
+    {% bootstrap_css %}
+
+    <title>Procesar Imagenes</title>
+
+    <style>
+        form {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="contenedor_remover">
+        <div class="seccion_inicio">
+            <h1 style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif ; font-weight: bold; font-size: 70px; color: #0270e0; margin-bottom: 0px;">QUITAR FONDO A IMAGENES</h1>
+            <h4 style="margin-top: 0px;font-size:15px; font-weight: bold ;font-family: cursive ;margin-bottom: 50px; color:#000000">Quita el fondo a tus imagenes de manera facil y agregalo a tus diseños</h4>
+            <a class="link_instrucciones" href="#instrucciones">Leer Instrucciones</a>
+            <div class="ingreso">
+                <div class="seccion_1">
+                    <div class="lado1">
+                        <p style="font-family: cursive; font-weight: bold; text-align: center;">Objetos</p>
+                        <img src="https://dia8publicidad.com/wp-content/uploads/2020/11/HAMBURGUESA-ONG.png" alt="Objetos">
+                    </div>
+                </div>
+                
+                <div class="seccion_medio">
+                    <form id="formulario-imagen" method="post" action="{% url 'procesar_imagen' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="file" name="origen_imagen" accept="image/*" onchange="mostrarVistaPrevia(this)"
+                            style="display: none;">
+            
+                        <div id="area-arrastre" onclick="handleClick()" ondragover="permitirArrastrar(event)"
+                            ondrop="manejarSoltar(event)">
+                            <div class="cargar_imagen">Cargar Imagen</div>
+                            <div class="img_origen" id="vista-previa-container" style="display: none;">
+                                <img id="vista-previa" alt="Vista previa de la imagen">
+                            </div>
+                        </div>
+                     
+                        <button class="enviar_btn" type="submit" value="Quitar Fondo" >Quitar Fondo</button>
+                    </form>
+                </div>
+                <div class="seccion_3">
+                    <div class="lado2">
+                        <p style="font-family: cursive; font-weight: bold; text-align: center;">Personas</p>
+                        <img src="{% load static %}{% static '/imagen_estatica/aside_1.png' %}" alt="Personas">
+                    </div>
+                    <div class="lado3">
+                        <p style="font-family: cursive; font-weight: bold; text-align: center;">Animales</p>
+                        <img src="https://www.1zoom.me/big2/76/74640-ilonka.jpg" alt="Personas">
+                    </div>
+                </div>
+                
+            </div>
+            
+        </div>
+    
+    
+        <div id="result" class="imagenes_resultados" >
+                <h1 style="font-family:'Franklin Gothic Medium'; font-weight: bold; font-size: 70px; color: #0270e0; margin-bottom: 50px;">RESULTADO</h1>
+
+
+            <div class="resultados_content">
+                <div class="original">
+                    <h2 style="color: #000000; font-family:'Franklin Gothic Medium'">Imagen Entrada</h2>
+                    {% if original_image_url %}
+                    <img class="imagen_original" src="{{ original_image_url }}" alt="Imagen entrada">
+                    {% else %}
+                    <p style="color: #000000;">No hay imagen entrada disponible.</p>
+                    {% endif %}
+                </div>
+                <div class="procesada">
+                    <h2 style="color: #000000; font-family:'Franklin Gothic Medium'">Imagen Procesada</h2>
+                    {% if processed_image_url %}
+                    <a class="btn_descargar" href="{{ processed_image_url }}" download="imagen_procesada.jpg">
+                        <img class="imagen_procesada" src="{{ processed_image_url }}" alt="Imagen procesada">
+                    </a>
+                    {% else %}
+                    <p style="color: #000000;">No hay imagen procesada disponible.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <div id="instrucciones" class="instrucciones_section">
+        <h1 style="color: #0270e0; font-weight: bold;font-size: 70px; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">INSTRUCCIONES</h1>
+        <div class="instrucciones_contenedor">
+            <div class="caja_instruccion">
+                <h2 style="color: #ffd500; font-weight: bold;">Elegir Imagen</h2>
+                <p style="color: #000000;font-weight: bold;">Elegir la imagen que queremos descargar</p>
+            </div>
+            <div class="caja_instruccion">
+                <h2 style="color: #ffd500; font-weight: bold;">Cargar Imagen</h2>
+                <p style="color: #000000;font-weight: bold;">Hacer clic en el botón "Cargar Imagen"</p>
+            </div>
+            <div class="caja_instruccion">
+                <h2 style="color: #ffd500; font-weight: bold;"> Quitar Fondo</h2>
+                <p style="color: #000000;font-weight: bold; ">Hacer clic en el botón "Quitar Fondo"</p>
+            </div>
+            <div class="caja_instruccion">
+                <h2 style="color: #ffd500; font-weight: bold;">Descargar</h2>
+                <p style="color: #000000;font-weight: bold;">Finalmente, poner el clic sobre la imagen procesada y hacer clic en "Descargar Imagen"</p>
+            </div>
+            
+        </div>
+
+        <div class="muestra">
+            <div class="img_result">
+                <h3>Antes</h3>
+                <img src="{% load static %}{% static '/imagen_estatica/antes.jpg' %}" alt="Imagen">
+            </div>
+            <div class="flecha">
+                <img src="{% load static %}{% static '/imagen_estatica/flecha.png' %}" alt="Imagen">
+            </div>
+            <div class="img_result">
+                <h3>Despues</h3>
+                <img src="{% load static %}{% static '/imagen_estatica/despues.jpg' %}" alt="Imagen">
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function handleClick() {
+            document.querySelector('input[name=origen_imagen]').click();
+        }
+
+        function mostrarVistaPrevia(input) {
+            var vistaPreviaContainer = document.getElementById('vista-previa-container');
+            var vistaPrevia = document.getElementById('vista-previa');
+            vistaPreviaContainer.style.display = 'block';
+
+            var archivo = input.files[0];
+            var lector = new FileReader();
+
+            lector.onload = function (e) {
+                vistaPrevia.src = e.target.result;
+            };
+
+            lector.readAsDataURL(archivo);
+        }
+
+        function permitirArrastrar(event) {
+            event.preventDefault();
+            document.getElementById('area-arrastre').style.backgroundColor = "#f9f9f9";
+        }
+
+        function manejarSoltar(event) {
+            event.preventDefault();
+
+
+            var archivo = event.dataTransfer.files[0];
+            if (archivo) {
+                var vistaPreviaContainer = document.getElementById('vista-previa-container');
+                var vistaPrevia = document.getElementById('vista-previa');
+                vistaPreviaContainer.style.display = 'block';
+
+                var lector = new FileReader();
+
+                lector.onload = function (e) {
+                    vistaPrevia.src = e.target.result;
+                };
+
+                lector.readAsDataURL(archivo);
+            }
+        }
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,30 @@
+ERROR:django.request:Internal Server Error: /quitar_fondo/
+Traceback (most recent call last):
+  File "C:\Users\NINO\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\NINO\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\NINO\Desktop\ProyectoDjango\App\views.py", line 23, in quitar_fondo
+    removebg.remove_background_from_img_file(imagen_input, size="regular")
+  File "C:\Users\NINO\AppData\Local\Programs\Python\Python311\Lib\site-packages\removebg\removebg.py", line 22, in remove_background_from_img_file
+    img_file = open(img_file_path, 'rb')
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'ruta/de/tu/imagen.jpg'
+INFO:django.utils.autoreload:C:\Users\NINO\Desktop\ProyectoDjango\App\views.py changed, reloading.
+ERROR:django.request:Internal Server Error: /quitar_fondo/
+Traceback (most recent call last):
+  File "C:\Users\NINO\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\NINO\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\NINO\Desktop\ProyectoDjango\App\views.py", line 23, in quitar_fondo
+    removebg.remove_background_from_img_file(imagen_input, size="regular")
+  File "C:\Users\NINO\AppData\Local\Programs\Python\Python311\Lib\site-packages\removebg\removebg.py", line 22, in remove_background_from_img_file
+    img_file = open(img_file_path, 'rb')
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: './imagenes/8.jpg'
+INFO:django.utils.autoreload:C:\Users\NINO\Desktop\ProyectoDjango\App\views.py changed, reloading.

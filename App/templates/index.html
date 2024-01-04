@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/estilosuno.css' %}">
+    <title>Resultados</title>
+</head>
+
+<body>
+    <div class="inicio_section">
+        <h2 class="inicio_titulo">{{mensaje}}</h2>
+        <div class="links_inicio">
+            <a class="link_btn" href="{% url 'generar_qr' %}"><span>Generar QR</span></a>
+            <a class="link_btn" href="{% url 'mejorar_imagen' %}"><span>Mejorar Imagen</span></a>
+            <a class="link_btn" href="{% url 'paleta_colores' %}"><span>Paleta de Colores</span></a>
+            <a class="link_btn" href="{% url 'procesar_imagen' %}"><span>Quitar Fondo de Imagenes</span></a>
+        </div>
+    </div>
+
+</body>
+
+</html>

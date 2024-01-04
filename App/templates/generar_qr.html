@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/estilosuno.css' %}">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="generar_qr">
+        <div class="ingreso_parametros">
+            <h1
+                style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif ; font-weight: bold; font-size: 70px; color: #0270e0; margin-bottom: 0px; margin-top: 0px;">
+                Generar QR</h1>
+            <form class="colum_ingreso" id="pasar_qr" method="post" action="{% url 'generar_qr' %}">
+                {% csrf_token %}
+                <label class="enlace_ingreso" for="ingreso_link">Ingresa el enlace:</label>
+                <input class="input_link" type="text" name="ingreso_link">
+                <button type="submit" class="enviar_btn" style="width: 450px; padding: 10px 60px;">Generar QR</button>
+            </form>
+        </div>
+
+        <h3>{{ enlace_web }}</h3>
+        {% block content %}
+        <img class="qrimagen" src="data:image/png;base64,{{ imagen_base64 }}" alt="Imagen QR" width="{{ 250 }}"
+            height="{{ 250 }}">
+        {% endblock %}
+
+        <a class="imagendelqr" href="data:image/png;base64,{{ imagen_base64 }}" download="imagen_qr.png">
+            Descargar Imagen QR
+        </a>
+    </div>
+
+</body>
+
+</html>

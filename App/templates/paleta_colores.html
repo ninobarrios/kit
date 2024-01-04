@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/estilosuno.css' %}">
+    <title>Generador de Colores</title>
+</head>
+
+<body>
+    <div class="container_carga">
+        <h1 style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif ; font-weight: bold; font-size: 70px; color: #0270e0; margin-bottom: 0px;">Paleta de Colores</h1>
+        <form id="formulario-imagen" method="post" action="{% url 'paleta_colores' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="origen_imagen" accept="image/*" onchange="mostrarVistaPrevia(this)"
+                style="display: none;">
+    
+            <div id="area-arrastre" onclick="handleClick()" ondragover="permitirArrastrar(event)"
+                ondrop="manejarSoltar(event)">
+                <div class="cargar_imagen">Cargar Imagen</div>
+                <div class="img_origen" id="vista-previa-container" style="display: none;">
+                    <img id="vista-previa" alt="Vista previa de la imagen">
+                </div>
+            </div>
+            <div class="ingreso_numero">
+                <label style="margin-top: 0px;font-size:20px; font-weight: 500 ;font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif ;margin-bottom: 0px; color:#000000" for="numero">Ingrese la cantidad de colores</label>
+                <input class="input_numero" type="number" id="numero" name="numero" min="0" max="100" required>
+            </div>
+            
+            <input class="enviar_btn" type="submit" value="Generar Paleta de Colores">
+        </form>
+    
+    
+        {% if colores_hex %}
+            <div class="paleta-container">
+                {% for color_hex in colores_hex %}
+                <div class="colores">
+                    <div class="paleta" style="background-color: {{ color_hex }}" onclick="copiarAlPortapapeles('{{ color_hex }}')">
+                        <div class="paleta_codigo"><p>{{ color_hex }}</p></div>
+                    </div>
+                </div>
+    
+                {% endfor %}
+            </div>
+        {% else %}
+        {% endif %}
+    </div>
+    
+
+    <div class="temas_section">
+        <h1 style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif ; font-weight: bold; font-size: 70px; color: #0270e0; margin-bottom: 0px;">Temas de colores</h1>
+        <div class="temas_container">
+            <div class="paleta_container">
+                <div class="tema_imagen">
+                    <img src="https://cloudfront-eu-central-1.images.arcpublishing.com/prisa/N6AB5UGMGZPCTNF7IYARXLJ2TY.jpg" alt="">
+                </div>
+                <div class="tema_colores">
+                    <div class="propiedad_colores" style="background-color: #b9bcc5; height:200px; width:80px" onclick="copiarAlPortapapeles('#b9bcc5')"><div class="codigo_color" >#b9bcc5</div></div>
+                    <div class="propiedad_colores" style="background-color: #0270e0; height:200px; width:80px" onclick="copiarAlPortapapeles('#0270e0')"><div class="codigo_color">#0270e0</div></div>
+                    <div class="propiedad_colores" style="background-color: #f6f4f1; height:200px; width:80px" onclick="copiarAlPortapapeles('#f6f4f1')"><div class="codigo_color">#f6f4f1</div></div>
+                    <div class="propiedad_colores" style="background-color: #0233b6; height:200px; width:80px" onclick="copiarAlPortapapeles('#0233b6')"><div class="codigo_color">#0233b6</div></div>
+                    <div class="propiedad_colores" style="background-color: #212240; height:200px; width:80px" onclick="copiarAlPortapapeles('#212240')"><div class="codigo_color">#212240</div></div>
+                </div>
+            </div>
+            <div class="paleta_container">
+                <div class="tema_imagen">
+                    <img src="https://curiosidatos.files.wordpress.com/2012/11/punta-cana1.jpg" alt="">
+                </div>
+                <div class="tema_colores">
+                    <div class="propiedad_colores" style="background-color: #079ac9; height:200px; width:80px" onclick="copiarAlPortapapeles('#079ac9')"><div class="codigo_color" >#079ac9</div></div>
+                    <div class="propiedad_colores" style="background-color: #cfd2bc; height:200px; width:80px" onclick="copiarAlPortapapeles('#cfd2bc')"><div class="codigo_color">#cfd2bc</div></div>
+                    <div class="propiedad_colores" style="background-color: #0a5b74; height:200px; width:80px" onclick="copiarAlPortapapeles('#0a5b74')"><div class="codigo_color">#0a5b74</div></div>
+                    <div class="propiedad_colores" style="background-color: #65bdd5; height:200px; width:80px" onclick="copiarAlPortapapeles('#65bdd5')"><div class="codigo_color">#65bdd5</div></div>
+                    <div class="propiedad_colores" style="background-color: #d3e4e6; height:200px; width:80px" onclick="copiarAlPortapapeles('#d3e4e6')"><div class="codigo_color">#d3e4e6</div></div>
+                </div>
+            </div>
+
+
+            <div class="paleta_container">
+                <div class="tema_imagen">
+                    <img src="https://www.melodijolola.com/media/files/aurora-borealis-northern-lights-sky-night.jpg" alt="">
+                </div>
+                <div class="tema_colores">
+                    <div class="propiedad_colores" style="background-color: #010601; height:200px; width:80px" onclick="copiarAlPortapapeles('#010601')"><div class="codigo_color" >#010601</div></div>
+                    <div class="propiedad_colores" style="background-color: #4eaf02; height:200px; width:80px" onclick="copiarAlPortapapeles('#4eaf02')"><div class="codigo_color">#4eaf02</div></div>
+                    <div class="propiedad_colores" style="background-color: #286e03; height:200px; width:80px" onclick="copiarAlPortapapeles('#286e03')"><div class="codigo_color">#286e03</div></div>
+                    <div class="propiedad_colores" style="background-color: #7fe006; height:200px; width:80px" onclick="copiarAlPortapapeles('#7fe006')"><div class="codigo_color">#7fe006</div></div>
+                    <div class="propiedad_colores" style="background-color: #103004; height:200px; width:80px" onclick="copiarAlPortapapeles('#103004')"><div class="codigo_color">#103004</div></div>
+                </div>
+            </div>
+
+            <div class="paleta_container">
+                <div class="tema_imagen">
+                    <img src="https://c4.wallpaperflare.com/wallpaper/108/140/869/digital-digital-art-artwork-fantasy-art-drawing-hd-wallpaper-thumb.jpg" alt="">
+                </div>
+                <div class="tema_colores">
+                    <div class="propiedad_colores" style="background-color: #8648c5; height:200px; width:80px" onclick="copiarAlPortapapeles('#8648c5')"><div class="codigo_color" >#8648c5</div></div>
+                    <div class="propiedad_colores" style="background-color: #1f0f3c; height:200px; width:80px" onclick="copiarAlPortapapeles('#1f0f3c')"><div class="codigo_color">#1f0f3c</div></div>
+                    <div class="propiedad_colores" style="background-color: #cf3654; height:200px; width:80px" onclick="copiarAlPortapapeles('#cf3654')"><div class="codigo_color">#cf3654</div></div>
+                    <div class="propiedad_colores" style="background-color: #431d64; height:200px; width:80px" onclick="copiarAlPortapapeles('#431d64')"><div class="codigo_color">#431d64</div></div>
+                    <div class="propiedad_colores" style="background-color: #991e5e; height:200px; width:80px" onclick="copiarAlPortapapeles('#991e5e')"><div class="codigo_color">#991e5e</div></div>
+                </div>
+            </div>
+            <div class="paleta_container">
+                <div class="tema_imagen">
+                    <img src="https://static.vecteezy.com/system/resources/thumbnails/005/732/461/small/night-time-scene-with-bright-full-moon-at-lake-vector.jpg" alt="">
+                </div>
+                <div class="tema_colores">
+                    <div class="propiedad_colores" style="background-color: #1c4465; height:200px; width:80px" onclick="copiarAlPortapapeles('#1c4465')"><div class="codigo_color" >#1c4465</div></div>
+                    <div class="propiedad_colores" style="background-color: #c2e5ed; height:200px; width:80px" onclick="copiarAlPortapapeles('#c2e5ed')"><div class="codigo_color">#c2e5ed</div></div>
+                    <div class="propiedad_colores" style="background-color: #0d2840; height:200px; width:80px" onclick="copiarAlPortapapeles('#0d2840')"><div class="codigo_color">#0d2840</div></div>
+                    <div class="propiedad_colores" style="background-color: #040d1d; height:200px; width:80px" onclick="copiarAlPortapapeles('#040d1d')"><div class="codigo_color">#040d1d</div></div>
+                    <div class="propiedad_colores" style="background-color: #36728f; height:200px; width:80px" onclick="copiarAlPortapapeles('#36728f')"><div class="codigo_color">#36728f</div></div>
+                </div>
+            </div>
+            <div class="paleta_container">
+                <div class="tema_imagen">
+                    <img src="https://webneel.com/wallpaper/sites/default/files/images/08-2018/2-nature-wallpaper-grass.jpg" alt="">
+                </div>
+                <div class="tema_colores">
+                    <div class="propiedad_colores" style="background-color: #0b1e81; height:200px; width:80px" onclick="copiarAlPortapapeles('#0b1e81')"><div class="codigo_color" >#0b1e81</div></div>
+                    <div class="propiedad_colores" style="background-color: #6abe1f; height:200px; width:80px" onclick="copiarAlPortapapeles('#6abe1f')"><div class="codigo_color">#6abe1f</div></div>
+                    <div class="propiedad_colores" style="background-color: #b9c1e1; height:200px; width:80px" onclick="copiarAlPortapapeles('#b9c1e1')"><div class="codigo_color">#b9c1e1</div></div>
+                    <div class="propiedad_colores" style="background-color: #3e7c0f; height:200px; width:80px" onclick="copiarAlPortapapeles('#3e7c0f')"><div class="codigo_color">#3e7c0f</div></div>
+                    <div class="propiedad_colores" style="background-color: #6276b1; height:200px; width:80px" onclick="copiarAlPortapapeles('#6276b1')"><div class="codigo_color">#6276b1</div></div>
+                </div>
+            </div>
+            <div class="paleta_container">
+                <div class="tema_imagen">
+                    <img src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSSHSZ7EYwaRP_lS06qLR6BgaHYerC0TUaeSk_FeFpR81cRJVhM" alt="">
+                </div>
+                <div class="tema_colores">
+                    <div class="propiedad_colores" style="background-color: #170603; height:200px; width:80px" onclick="copiarAlPortapapeles('#170603')"><div class="codigo_color" >#170603</div></div>
+                    <div class="propiedad_colores" style="background-color: #dd5401; height:200px; width:80px" onclick="copiarAlPortapapeles('#dd5401')"><div class="codigo_color">#dd5401</div></div>
+                    <div class="propiedad_colores" style="background-color: #983204; height:200px; width:80px" onclick="copiarAlPortapapeles('#983204')"><div class="codigo_color">#983204</div></div>
+                    <div class="propiedad_colores" style="background-color: #fdf9b4; height:200px; width:80px" onclick="copiarAlPortapapeles('#fdf9b4')"><div class="codigo_color">#fdf9b4</div></div>
+                    <div class="propiedad_colores" style="background-color: #fb7600; height:200px; width:80px" onclick="copiarAlPortapapeles('#fb7600')"><div class="codigo_color">#fb7600</div></div>
+                </div>
+            </div>
+            <div class="paleta_container">
+                <div class="tema_imagen">
+                    <img src="https://www.nationalgeographic.com.es/medio/2023/03/09/glaciar_699cdc25_230309090252_1280x853.jpg" alt="">
+                </div>
+                <div class="tema_colores">
+                    <div class="propiedad_colores" style="background-color: #bbc9d4; height:200px; width:80px" onclick="copiarAlPortapapeles('#bbc9d4')"><div class="codigo_color" >#bbc9d4</div></div>
+                    <div class="propiedad_colores" style="background-color: #4994c4; height:200px; width:80px" onclick="copiarAlPortapapeles('#4994c4')"><div class="codigo_color">#4994c4</div></div>
+                    <div class="propiedad_colores" style="background-color: #096495; height:200px; width:80px" onclick="copiarAlPortapapeles('#096495')"><div class="codigo_color">#096495</div></div>
+                    <div class="propiedad_colores" style="background-color: #f1e4db; height:200px; width:80px" onclick="copiarAlPortapapeles('#f1e4db')"><div class="codigo_color">#f1e4db</div></div>
+                    <div class="propiedad_colores" style="background-color: #83b0d2; height:200px; width:80px" onclick="copiarAlPortapapeles('#83b0d2')"><div class="codigo_color">#83b0d2</div></div>
+                </div>
+            </div>
+
+            <div class="paleta_container">
+                <div class="tema_imagen">
+                    <img src="https://i.pinimg.com/736x/78/b3/e1/78b3e160c15a0817af57813be891163d.jpg" alt="">
+                </div>
+                <div class="tema_colores">
+                    <div class="propiedad_colores" style="background-color: #61462c; height:200px; width:80px" onclick="copiarAlPortapapeles('#61462c')"><div class="codigo_color" >#61462c</div></div>
+                    <div class="propiedad_colores" style="background-color: #6b6d4d; height:200px; width:80px" onclick="copiarAlPortapapeles('#6b6d4d')"><div class="codigo_color">#6b6d4d</div></div>
+                    <div class="propiedad_colores" style="background-color: #ad5829; height:200px; width:80px" onclick="copiarAlPortapapeles('#ad5829')"><div class="codigo_color">#ad5829</div></div>
+                    <div class="propiedad_colores" style="background-color: #bfa27e; height:200px; width:80px" onclick="copiarAlPortapapeles('#bfa27e')"><div class="codigo_color">#bfa27e</div></div>
+                    <div class="propiedad_colores" style="background-color: #2b221b; height:200px; width:80px" onclick="copiarAlPortapapeles('#2b221b')"><div class="codigo_color">#2b221b</div></div>
+                </div>
+            </div>
+
+            
+
+            <div class="paleta_container">
+                <div class="tema_imagen">
+                    <img src="https://w0.peakpx.com/wallpaper/390/212/HD-wallpaper-camaro-chevrolet-ss.jpg" alt="">
+                </div>
+                <div class="tema_colores">
+                    <div class="propiedad_colores" style="background-color: #151211; height:200px; width:80px" onclick="copiarAlPortapapeles('#151211')"><div class="codigo_color" >#151211</div></div>
+                    <div class="propiedad_colores" style="background-color: #a34850; height:200px; width:80px" onclick="copiarAlPortapapeles('#a34850')"><div class="codigo_color">#a34850</div></div>
+                    <div class="propiedad_colores" style="background-color: #750f24; height:200px; width:80px" onclick="copiarAlPortapapeles('#750f24')"><div class="codigo_color">#750f24</div></div>
+                    <div class="propiedad_colores" style="background-color: #483f3a; height:200px; width:80px" onclick="copiarAlPortapapeles('#483f3a')"><div class="codigo_color">#483f3a</div></div>
+                    <div class="propiedad_colores" style="background-color: #cb1f40; height:200px; width:80px" onclick="copiarAlPortapapeles('#cb1f40')"><div class="codigo_color">#cb1f40</div></div>
+                </div>
+            </div>
+
+            <div class="paleta_container">
+                <div class="tema_imagen">
+                    <img src="https://w0.peakpx.com/wallpaper/776/180/HD-wallpaper-camaro-cars-new-red.jpg" alt="">
+                </div>
+                <div class="tema_colores">
+                    <div class="propiedad_colores" style="background-color: #7998ad; height:200px; width:80px" onclick="copiarAlPortapapeles('#7998ad')"><div class="codigo_color" >#7998ad</div></div>
+                    <div class="propiedad_colores" style="background-color: #0d0709; height:200px; width:80px" onclick="copiarAlPortapapeles('#0d0709')"><div class="codigo_color">#0d0709</div></div>
+                    <div class="propiedad_colores" style="background-color: #cee7f0; height:200px; width:80px" onclick="copiarAlPortapapeles('#cee7f0')"><div class="codigo_color">#cee7f0</div></div>
+                    <div class="propiedad_colores" style="background-color: #d70b17; height:200px; width:80px" onclick="copiarAlPortapapeles('#d70b17')"><div class="codigo_color">#d70b17</div></div>
+                    <div class="propiedad_colores" style="background-color: #323d49; height:200px; width:80px" onclick="copiarAlPortapapeles('#323d49')"><div class="codigo_color">#323d49</div></div>
+                </div>
+            </div>
+
+            <div class="paleta_container">
+                <div class="tema_imagen">
+                    <img src="https://t3.ftcdn.net/jpg/05/85/86/44/360_F_585864419_kgIYUcDQ0yiLOCo1aRjeu7kRxndcoitz.jpg" alt="">
+                </div>
+                <div class="tema_colores">
+                    <div class="propiedad_colores" style="background-color: #d01968; height:200px; width:80px" onclick="copiarAlPortapapeles('#d01968')"><div class="codigo_color" >#d01968</div></div>
+                    <div class="propiedad_colores" style="background-color: #190a29; height:200px; width:80px" onclick="copiarAlPortapapeles('#190a29')"><div class="codigo_color">#190a29</div></div>
+                    <div class="propiedad_colores" style="background-color: #1f6bb6; height:200px; width:80px" onclick="copiarAlPortapapeles('#1f6bb6')"><div class="codigo_color">#1f6bb6</div></div>
+                    <div class="propiedad_colores" style="background-color: #f19918; height:200px; width:80px" onclick="copiarAlPortapapeles('#f19918')"><div class="codigo_color">#f19918</div></div>
+                    <div class="propiedad_colores" style="background-color: #680c35; height:200px; width:80px" onclick="copiarAlPortapapeles('#680c35')"><div class="codigo_color">#680c35</div></div>
+                </div>
+            </div>
+
+            
+
+            <div class="paleta_container">
+                <div class="tema_imagen">
+                    <img src="https://4.bp.blogspot.com/-VDKaMh4rtwI/WAuY65aCIII/AAAAAAAAMCw/PsAaSl9JgowFh3o9GC8QBAYxtqLWA2ekgCLcB/s1600/Night%2BHD%2Bwallpapers%2B45.jpg" alt="">
+                </div>
+                <div class="tema_colores">
+                    <div class="propiedad_colores" style="background-color: #223047; height:200px; width:80px" onclick="copiarAlPortapapeles('#223047')"><div class="codigo_color" >#223047</div></div>
+                    <div class="propiedad_colores" style="background-color: #d8e5f1; height:200px; width:80px" onclick="copiarAlPortapapeles('#d8e5f1')"><div class="codigo_color">#d8e5f1</div></div>
+                    <div class="propiedad_colores" style="background-color: #090c15; height:200px; width:80px" onclick="copiarAlPortapapeles('#090c15')"><div class="codigo_color">#090c15</div></div>
+                    <div class="propiedad_colores" style="background-color: #6c95be; height:200px; width:80px" onclick="copiarAlPortapapeles('#6c95be')"><div class="codigo_color">#6c95be</div></div>
+                    <div class="propiedad_colores" style="background-color: #3a587e; height:200px; width:80px" onclick="copiarAlPortapapeles('#3a587e')"><div class="codigo_color">#3a587e</div></div>
+                </div>
+            </div>
+
+            
+
+            <div class="paleta_container">
+                <div class="tema_imagen">
+                    <img src="https://previews.123rf.com/images/marilenart/marilenart1511/marilenart151100040/48421045-paisaje-de-invierno-bosque-del-invierno-con-los-%C3%A1rboles-cubiertos-de-nieve.jpg" alt="">
+                </div>
+                <div class="tema_colores">
+                    <div class="propiedad_colores" style="background-color: #b1bdc9; height:200px; width:80px" onclick="copiarAlPortapapeles('#b1bdc9')"><div class="codigo_color" >#b1bdc9</div></div>
+                    <div class="propiedad_colores" style="background-color: #637483; height:200px; width:80px" onclick="copiarAlPortapapeles('#637483')"><div class="codigo_color">#637483</div></div>
+                    <div class="propiedad_colores" style="background-color: #e2e7ee; height:200px; width:80px" onclick="copiarAlPortapapeles('#e2e7ee')"><div class="codigo_color">#e2e7ee</div></div>
+                    <div class="propiedad_colores" style="background-color: #8a9ba9; height:200px; width:80px" onclick="copiarAlPortapapeles('#8a9ba9')"><div class="codigo_color">#8a9ba9</div></div>
+                    <div class="propiedad_colores" style="background-color: #35404d; height:200px; width:80px" onclick="copiarAlPortapapeles('#35404d')"><div class="codigo_color">#35404d</div></div>
+                </div>
+            </div>
+
+            <div class="paleta_container">
+                <div class="tema_imagen">
+                    <img src="https://i.pinimg.com/736x/10/1d/9a/101d9a396533d3f687aef71277930c0c.jpg" alt="">
+                </div>
+                <div class="tema_colores">
+                    <div class="propiedad_colores" style="background-color: #ffffff; height:200px; width:80px" onclick="copiarAlPortapapeles('#ffffff')"><div class="codigo_color" >#ffffff</div></div>
+                    <div class="propiedad_colores" style="background-color: #e68b44; height:200px; width:80px" onclick="copiarAlPortapapeles('#e68b44')"><div class="codigo_color">#e68b44</div></div>
+                    <div class="propiedad_colores" style="background-color: #777971; height:200px; width:80px" onclick="copiarAlPortapapeles('#777971')"><div class="codigo_color">#777971</div></div>
+                    <div class="propiedad_colores" style="background-color: #b7b79e; height:200px; width:80px" onclick="copiarAlPortapapeles('#b7b79e')"><div class="codigo_color">#b7b79e</div></div>
+                    <div class="propiedad_colores" style="background-color: #000000; height:200px; width:80px" onclick="copiarAlPortapapeles('#000000')"><div class="codigo_color">#000000</div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    
+    
+    
+    <script>
+        function handleClick() {
+            document.querySelector('input[name=origen_imagen]').click();
+        }
+
+        function mostrarVistaPrevia(input) {
+            var vistaPreviaContainer = document.getElementById('vista-previa-container');
+            var vistaPrevia = document.getElementById('vista-previa');
+            vistaPreviaContainer.style.display = 'block';
+
+            var archivo = input.files[0];
+            var lector = new FileReader();
+
+            lector.onload = function (e) {
+                vistaPrevia.src = e.target.result;
+            };
+
+            lector.readAsDataURL(archivo);
+        }
+
+        function permitirArrastrar(event) {
+            event.preventDefault();
+            document.getElementById('area-arrastre').style.backgroundColor = "#f9f9f9";
+        }
+
+        function manejarSoltar(event) {
+            event.preventDefault();
+
+
+            var archivo = event.dataTransfer.files[0];
+            if (archivo) {
+                var vistaPreviaContainer = document.getElementById('vista-previa-container');
+                var vistaPrevia = document.getElementById('vista-previa');
+                vistaPreviaContainer.style.display = 'block';
+
+                var lector = new FileReader();
+
+                lector.onload = function (e) {
+                    vistaPrevia.src = e.target.result;
+                };
+
+                lector.readAsDataURL(archivo);
+            }
+        }
+        function copiarAlPortapapeles(codigo) {
+            const elementoTemporal = document.createElement('textarea');
+            elementoTemporal.value = codigo;
+            document.body.appendChild(elementoTemporal);
+            elementoTemporal.select();
+            document.execCommand('copy');
+            document.body.removeChild(elementoTemporal);
+        
+            const mensajeElemento = document.createElement('div');
+            mensajeElemento.textContent = '¡Copiado!';
+            mensajeElemento.classList.add('mensaje-copiado');
+        
+            document.body.appendChild(mensajeElemento);
+        
+            setTimeout(() => {
+                mensajeElemento.style.opacity = 0;
+                setTimeout(() => {
+                    document.body.removeChild(mensajeElemento);
+                }, 1000);
+            }, 3000);
+        }
+        
+        
+    </script>
+</body>
+
+</html>

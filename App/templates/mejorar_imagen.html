@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/estilosuno.css' %}">
+    <title>Document</title>
+    <style>
+        form {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="mejorar_imagen">
+        <h1 style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif ; font-weight: bold; font-size: 70px; color: #0270e0; margin-bottom: 0px; margin-top: 0px;">Mejorar Imagen</h1>
+        <form id="formulario-imagen" method="post" enctype="multipart/form-data" action="{% url 'mejorar_imagen' %}">
+            {% csrf_token %}
+            <input type="file" name="origen_imagen" accept="image/*" onchange="mostrarVistaPrevia(this)"
+                style="display: none;">
+            <div id="area-arrastre" onclick="handleClick()" ondragover="permitirArrastrar(event)"
+                ondrop="manejarSoltar(event)">
+                <div class="cargar_imagen">Cargar Imagen</div>
+                <div class="img_origen" id="vista-previa-container" style="display: none;">
+                    <img id="vista-previa" alt="Vista previa de la imagen">
+                </div>
+            </div>
+            <button class="enviar_btn" type="submit" value="Mejorar Imagen" >Mejorar Imagen</button>
+        </form>
+        <div class="resultados_content">
+            <div class="original">
+                <h2 style="color: #000000; font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif">Imagen Entrada</h2>
+                {% if original_image_url %}
+                <img class="imagen_original" src="{{ original_image_url }}" alt="Imagen entrada">
+                {% else %}
+                <p style="color: #000000; font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif" >No hay imagen entrada disponible.</p>
+                {% endif %}
+            </div>
+            <div class="procesada">
+                <h2 style="color: #000000; font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif">Imagen Procesada</h2>
+                {% if processed_image_url %}
+                <a class="btn_descargar" href="{{ processed_image_url }}" download="imagen_procesada.jpg">
+                    <img class="imagen_procesada" src="{{ processed_image_url }}" alt="Imagen procesada">
+                </a>
+                {% else %}
+                <p style="color: #000000; font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif">No hay imagen procesada disponible.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function handleClick() {
+            document.querySelector('input[name=origen_imagen]').click();
+        }
+
+        function mostrarVistaPrevia(input) {
+            var vistaPreviaContainer = document.getElementById('vista-previa-container');
+            var vistaPrevia = document.getElementById('vista-previa');
+            vistaPreviaContainer.style.display = 'block';
+
+            var archivo = input.files[0];
+            var lector = new FileReader();
+
+            lector.onload = function (e) {
+                vistaPrevia.src = e.target.result;
+            };
+
+            lector.readAsDataURL(archivo);
+        }
+
+        function permitirArrastrar(event) {
+            event.preventDefault();
+            document.getElementById('area-arrastre').style.backgroundColor = "#f9f9f9";
+        }
+
+        function manejarSoltar(event) {
+            event.preventDefault();
+
+
+            var archivo = event.dataTransfer.files[0];
+            if (archivo) {
+                var vistaPreviaContainer = document.getElementById('vista-previa-container');
+                var vistaPrevia = document.getElementById('vista-previa');
+                vistaPreviaContainer.style.display = 'block';
+
+                var lector = new FileReader();
+
+                lector.onload = function (e) {
+                    vistaPrevia.src = e.target.result;
+                };
+
+                lector.readAsDataURL(archivo);
+            }
+        }
+
+    </script>
+</body>
+
+</html>
