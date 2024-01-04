@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from App.views import paleta_colores, procesar_imagen,mejorar_imagen, generar_qr, index, pruebas
+from App.views import paleta_colores, procesar_imagen, mejorar_imagen, generar_qr, index, pruebas
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -13,5 +13,6 @@ urlpatterns = [
     path('index/', index, name='index'),
     path('pruebas/', pruebas, name='pruebas'),
 ]
+
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
